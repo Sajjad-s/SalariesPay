@@ -20,7 +20,7 @@ public class Transactions {
     }
 
     public void writeInTransactionsFile(String depositAccountNumber, String withdrawalAccountNumber, double amount) {
-        String completeTransaction = withdrawalAccountNumber + "        " + depositAccountNumber + Double.toString(amount);
+        String completeTransaction = withdrawalAccountNumber + "        " + depositAccountNumber + "        " +Double.toString(amount) + "\n";
         try {
             FileWriter fileWriter = new FileWriter(file,true);
             fileWriter.write(completeTransaction);
