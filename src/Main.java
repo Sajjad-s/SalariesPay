@@ -10,17 +10,20 @@ public class Main {
 //        payment.setAmount(700);
 //        payment.paymentRun();
 
-//        Balance balance = new Balance();
+        Balance balance = new Balance("1.10.100.2");
 //        balance.setDepositNumber("1.10.100.2");
 //        balance.setAmount(2000);
 //        balance.balanceRun();
 
-        Transactions transactions = new Transactions();
-        transactions.setAmount(500);
-        transactions.setDepositAccountNumber("1.10.100.4");
-        transactions.setWithdrawalAccountNumber("1.20.100.5");
-        transactions.transactionRun();
+//        Transactions transactions = new Transactions();
+//        transactions.setAmount(500);
+//        transactions.setDepositAccountNumber("1.10.100.4");
+//        transactions.setWithdrawalAccountNumber("1.20.100.5");
+//        transactions.transactionRun();
 
+        Transactions transactions = new Transactions("1.10.500.4","1.10.600.5",800.0);
+        Payment payment = new Payment("debtor", "1.10.500.4", 1000);
+//        Balance balance = new Balance("1.10.500.4", 1000);
     }
 
 

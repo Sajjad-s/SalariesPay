@@ -7,6 +7,26 @@ public class Transactions {
     double amount;
     File file = new File("Transactions.txt");
 
+    public Transactions(String depositAccountNumber, String withdrawalAccountNumber, double amount) {
+        this.depositAccountNumber = depositAccountNumber;
+        this.withdrawalAccountNumber = withdrawalAccountNumber;
+        this.amount = amount;
+        if (createTransactionsFile()) {
+            writeInTransactionsFile(depositAccountNumber, withdrawalAccountNumber, amount);
+        }
+    }
+
+//    public  Transactions(String depositAccountNumber, String withdrawalAccountNumber, double amount){
+//        this.depositAccountNumber = depositAccountNumber;
+//        this.withdrawalAccountNumber = withdrawalAccountNumber;
+//        this.amount = amount;
+//        if (createTransactionsFile()){
+//            writeInTransactionsFile(depositAccountNumber, withdrawalAccountNumber, amount);
+//            return true;
+//        }
+//        else return false;
+//    }
+
     public boolean createTransactionsFile() {
         try {
             if (file.createNewFile()) System.out.println("Transactions.txt Created");
@@ -20,19 +40,19 @@ public class Transactions {
     }
 
     public void writeInTransactionsFile(String depositAccountNumber, String withdrawalAccountNumber, double amount) {
-        String completeTransaction = withdrawalAccountNumber + "        " + depositAccountNumber + "        " +Double.toString(amount) + "\n";
+        String completeTransaction = withdrawalAccountNumber + "        " + depositAccountNumber + "        " + Double.toString(amount) + "\n";
         try {
-            FileWriter fileWriter = new FileWriter(file,true);
+            FileWriter fileWriter = new FileWriter(file, true);
             fileWriter.write(completeTransaction);
             fileWriter.close();
             System.out.println("Write in Transactions.txt complete");
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Error in writeInTransactionsFile");
         }
     }
 
-    public void transactionRun(){
-        if(createTransactionsFile())
+    public void transactionRun() {
+        if (createTransactionsFile())
             writeInTransactionsFile(depositAccountNumber, withdrawalAccountNumber, amount);
 
     }

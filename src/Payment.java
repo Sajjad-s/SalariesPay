@@ -10,6 +10,15 @@ public class Payment {
 
     File file = new File("PaymentOrder.txt");
 
+    public Payment(String status, String accountNumber, double amount) {
+        this.status = status;
+        this.accountNumber = accountNumber;
+        this.amount = amount;
+        if (createPaymentFile()){
+            writeInPaymentFile(status, accountNumber, amount);
+        }
+    }
+
     public boolean createPaymentFile() {
         try {
             if (file.createNewFile()) System.out.println("PaymentOrder.txt Created");
