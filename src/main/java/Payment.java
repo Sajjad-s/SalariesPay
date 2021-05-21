@@ -1,6 +1,10 @@
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class Payment {
 
@@ -10,14 +14,20 @@ public class Payment {
 
     File file = new File("PaymentOrder.txt");
 
-    public Payment(String status, String accountNumber, double amount) {
-        this.status = status;
-        this.accountNumber = accountNumber;
-        this.amount = amount;
-        if (createPaymentFile()){
-            writeInPaymentFile(status, accountNumber, amount);
-        }
-    }
+//    public Payment(String status, String accountNumber, double amount) {
+//        this.status = status;
+//        this.accountNumber = accountNumber;
+//        this.amount = amount;
+//        if (createPaymentFile()) {
+//            writeInPaymentFile(status, accountNumber, amount);
+//        }
+//    }
+//
+//    public Payment() {
+//        this.status = status;
+//        this.accountNumber = accountNumber;
+//        this.amount = amount;
+//    }
 
     public boolean createPaymentFile() {
         try {
@@ -43,8 +53,35 @@ public class Payment {
         }
     }
 
+public void paymentToJson () throws FileNotFoundException {
+       try {
+           JSONObject jsonObject = new JSONObject();
+           String[] lineToArray = null;
+           String[] stringsArray = null;
+           FileReader fileReader = new FileReader(file);
+           BufferedReader bufferedReader = new BufferedReader(fileReader);
+           String string = null;
+           while ((string = bufferedReader.readLine()) != null ){
+               lineToArray = string.split("         ");
+               for(String word : lineToArray){
+                   stringsArray = string.split("\\s");
+                   if (word == "debtor"){
+                       jsonObject.put(lineToArray[1], lineToArray[2]);
+                   }
+                   // Keep on nesting
+
+               }
+           }
+
+       }catch (Exception e){
+           e.printStackTrace();
+           System.out.println("Error in PaymentToJason");
+       }
+}
+
+
     public void paymentRun() {
-        if(createPaymentFile())
+        if (createPaymentFile())
             writeInPaymentFile(status, accountNumber, amount);
     }
 

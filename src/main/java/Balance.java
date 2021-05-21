@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.Arrays;
 
 public class Balance {
 
@@ -9,17 +10,17 @@ public class Balance {
     double amount;
     File file = new File("Balances.txt");
 
-    public Balance(String depositNumber, double amount) {
-        this.depositNumber = depositNumber;
-        this.amount = amount;
-        if (createBalanceFile()) {
-            writeInBalanceFile(depositNumber, amount);
-        }
-    }
+//    public Balance(String depositNumber, double amount) {
+//        this.depositNumber = depositNumber;
+//        this.amount = amount;
+//        if (createBalanceFile()) {
+//            writeInBalanceFile(depositNumber, amount);
+//        }
+//    }
 
-    public Balance(String depositNumber) {
-        searchInBalance(depositNumber);
-    }
+//    public Balance(String depositNumber) {
+//        searchInBalance(depositNumber);
+//    }
 
     public boolean createBalanceFile() {
         try {
@@ -48,18 +49,45 @@ public class Balance {
         }
     }
 
+//    public double searchInBalance(String depositNumber) {
+//        try {
+//            String[] words = null;
+//            FileReader fileReader = new FileReader(file);
+//            BufferedReader bufferedReader = new BufferedReader(fileReader);
+//            String string;
+//            String inputBalanceToFind = depositNumber;
+//            while ((string = bufferedReader.readLine()) != null) {
+//                words = string.split("        ");
+//
+//                for (int i = 1; i < words.length; i += 2) {
+//                    if (words[i].equals(inputBalanceToFind)) {
+//                        System.out.println(words[i] + " - " + words[i - 1]);
+//                    }
+//                    else
+//                        System.out.println("Not Found");
+//                }
+//            }
+//            fileReader.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            System.out.println("Error in searchInBalance");
+//        }
+//        return 1;
+//    }
+
     public double searchInBalance(String depositNumber) {
         try {
-            String[] words = null;
+            String[] lineToArray = null;
+            String[] stringsArray = null;
             FileReader fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String string;
-            String inputBalanceToFind = depositNumber;
             while ((string = bufferedReader.readLine()) != null) {
-                words = string.split("        ");
-                for (String word : words) {
-                    if (word.equals(inputBalanceToFind)) {
-                        System.out.println("string :" + string);
+                lineToArray = string.split("        ");
+                for (String word : lineToArray) {
+                    if (word.equals(depositNumber)) {
+                        stringsArray = string.split("\\s+");
+                        return Double.parseDouble(stringsArray[1]);
                     }
                 }
             }
@@ -91,3 +119,5 @@ public class Balance {
         this.amount = amount;
     }
 }
+
+
