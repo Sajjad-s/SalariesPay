@@ -1,3 +1,4 @@
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -53,31 +54,40 @@ public class Payment {
         }
     }
 
-public void paymentToJson () throws FileNotFoundException {
-       try {
-           JSONObject jsonObject = new JSONObject();
-           String[] lineToArray = null;
-           String[] stringsArray = null;
-           FileReader fileReader = new FileReader(file);
-           BufferedReader bufferedReader = new BufferedReader(fileReader);
-           String string = null;
-           while ((string = bufferedReader.readLine()) != null ){
-               lineToArray = string.split("         ");
-               for(String word : lineToArray){
-                   stringsArray = string.split("\\s");
-                   if (word == "debtor"){
-                       jsonObject.put(lineToArray[1], lineToArray[2]);
-                   }
-                   // Keep on nesting
-
-               }
-           }
-
-       }catch (Exception e){
-           e.printStackTrace();
-           System.out.println("Error in PaymentToJason");
-       }
-}
+    public JSONObject paymentToJson() throws FileNotFoundException {
+        try {
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            JSONObject jsonObjectParent = new JSONObject();
+            JSONObject jsonObjectChild = new JSONObject();
+            JSONArray jsonArray = new JSONArray();
+            String[] lineToArray = null;
+            String[] stringsArray = null;
+            double amountOfPayment = 0;
+            String line = null;
+            while ((line = bufferedReader.readLine()) != null) {
+                lineToArray = line.split("          ");
+                for (String word : lineToArray) {
+                    stringsArray = line.split("\\s");
+                    if (word.equals("debtor")) {
+                        jsonObjectParent.put("withDrawAccountNumber", lineToArray[1]);
+                        jsonObjectParent.put("Amount", lineToArray[2]);
+                    }
+                    if (word.equals("creditor")) {
+                        jsonObjectParent.put("creditor", jsonObjectChild.put(lineToArray[1],lineToArray[2]) );
+                        amountOfPayment += Double.parseDouble(lineToArray[2]);
+                    }
+                }
+            }
+            System.out.println(amountOfPayment);
+            System.out.println(jsonObjectParent);
+            return jsonObjectParent;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error in PaymentToJason");
+            return null;
+        }
+    }
 
 
     public void paymentRun() {

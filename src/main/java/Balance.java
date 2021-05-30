@@ -33,7 +33,10 @@ public class Balance {
             return false;
         }
     }
-
+    public Boolean editBalanceFile(String depositNumber, double amount){
+        FileWriter fileWriter = new 
+        return true
+    }
     public Boolean writeInBalanceFile(String depositNumber, double amount) {
         String inputBalance;
         try {
@@ -49,54 +52,30 @@ public class Balance {
         }
     }
 
-//    public double searchInBalance(String depositNumber) {
-//        try {
-//            String[] words = null;
-//            FileReader fileReader = new FileReader(file);
-//            BufferedReader bufferedReader = new BufferedReader(fileReader);
-//            String string;
-//            String inputBalanceToFind = depositNumber;
-//            while ((string = bufferedReader.readLine()) != null) {
-//                words = string.split("        ");
-//
-//                for (int i = 1; i < words.length; i += 2) {
-//                    if (words[i].equals(inputBalanceToFind)) {
-//                        System.out.println(words[i] + " - " + words[i - 1]);
-//                    }
-//                    else
-//                        System.out.println("Not Found");
-//                }
-//            }
-//            fileReader.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            System.out.println("Error in searchInBalance");
-//        }
-//        return 1;
-//    }
-
     public double searchInBalance(String depositNumber) {
+        String[] lineToArray = null;
+        String[] stringsArray = null;
         try {
-            String[] lineToArray = null;
-            String[] stringsArray = null;
             FileReader fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String string;
             while ((string = bufferedReader.readLine()) != null) {
-                lineToArray = string.split("        ");
+                lineToArray = string.split("          ");
                 for (String word : lineToArray) {
-                    if (word.equals(depositNumber)) {
-                        stringsArray = string.split("\\s+");
+                    stringsArray = string.split("\\s+");
+                    if (stringsArray[0].equals(depositNumber)) {
                         return Double.parseDouble(stringsArray[1]);
                     }
+
                 }
             }
             fileReader.close();
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error in searchInBalance");
+            return -1;
         }
-        return 1;
+        return -1;
     }
 
     public void balanceRun() {
