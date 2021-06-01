@@ -1,34 +1,47 @@
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Payment {
 
-    String status;
-    String accountNumber;
-    double amount;
+    Debtor debtor;
 
+    List<Creditors> creditorsList = new ArrayList<>();
     File file = new File("PaymentOrder.txt");
 
-//    public Payment(String status, String accountNumber, double amount) {
-//        this.status = status;
-//        this.accountNumber = accountNumber;
-//        this.amount = amount;
-//        if (createPaymentFile()) {
-//            writeInPaymentFile(status, accountNumber, amount);
-//        }
-//    }
-//
-//    public Payment() {
-//        this.status = status;
-//        this.accountNumber = accountNumber;
-//        this.amount = amount;
-//    }
+    public Payment() throws FileNotFoundException {
+        paymentFileToJson();
+    }
+
+    public void paymentFileToJson() throws FileNotFoundException {
+        try {
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String[] lineToArray = null;
+            String[] stringsArray = null;
+            double amountOfPayment = 0;
+            String line = null;
+            while ((line = bufferedReader.readLine()) != null) {
+                lineToArray = line.split("          ");
+                for (String word : lineToArray) {
+                    stringsArray = line.split("\\s");
+
+                    if (word.equals("debtor")) {
+                        debtor = new Debtor(lineToArray[1],lineToArray[2]);
+                    }
+
+                    if (word.equals("creditor")) {
+                        creditorsList.add(new Creditors(lineToArray[1],lineToArray[2]));
+                    }
+                }
+            }
+            } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error in PaymentToJason");
+        }
+    }
 
     public boolean createPaymentFile() {
         try {
@@ -54,70 +67,11 @@ public class Payment {
         }
     }
 
-    public JSONObject paymentToJson() throws FileNotFoundException {
-        try {
-            FileReader fileReader = new FileReader(file);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            JSONObject jsonObjectParent = new JSONObject();
-            JSONObject jsonObjectChild = new JSONObject();
-            JSONArray jsonArray = new JSONArray();
-            String[] lineToArray = null;
-            String[] stringsArray = null;
-            double amountOfPayment = 0;
-            String line = null;
-            while ((line = bufferedReader.readLine()) != null) {
-                lineToArray = line.split("          ");
-                for (String word : lineToArray) {
-                    stringsArray = line.split("\\s");
-                    if (word.equals("debtor")) {
-                        jsonObjectParent.put("withDrawAccountNumber", lineToArray[1]);
-                        jsonObjectParent.put("Amount", lineToArray[2]);
-                    }
-                    if (word.equals("creditor")) {
-                        jsonObjectParent.put("creditor", jsonObjectChild.put(lineToArray[1],lineToArray[2]) );
-                        amountOfPayment += Double.parseDouble(lineToArray[2]);
-                    }
-                }
-            }
-            System.out.println(amountOfPayment);
-            System.out.println(jsonObjectParent);
-            return jsonObjectParent;
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error in PaymentToJason");
-            return null;
-        }
+    public List<Creditors> getCreditorList() {
+        return creditorsList;
     }
 
-
-    public void paymentRun() {
-        if (createPaymentFile())
-            writeInPaymentFile(status, accountNumber, amount);
+    public Debtor getDebtor() {
+        return debtor;
     }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
-    public void setAccountNumber(String whitdrawNumber) {
-        this.accountNumber = whitdrawNumber;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
 }
-

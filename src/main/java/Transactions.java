@@ -7,25 +7,14 @@ public class Transactions {
     double amount;
     File file = new File("Transactions.txt");
 
-//    public Transactions(String depositAccountNumber, String withdrawalAccountNumber, double amount) {
-//        this.depositAccountNumber = depositAccountNumber;
-//        this.withdrawalAccountNumber = withdrawalAccountNumber;
-//        this.amount = amount;
-//        if (createTransactionsFile()) {
-//            writeInTransactionsFile(depositAccountNumber, withdrawalAccountNumber, amount);
-//        }
-//    }
-
-//    public  Transactions(String depositAccountNumber, String withdrawalAccountNumber, double amount){
-//        this.depositAccountNumber = depositAccountNumber;
-//        this.withdrawalAccountNumber = withdrawalAccountNumber;
-//        this.amount = amount;
-//        if (createTransactionsFile()){
-//            writeInTransactionsFile(depositAccountNumber, withdrawalAccountNumber, amount);
-//            return true;
-//        }
-//        else return false;
-//    }
+    public Transactions(String depositAccountNumber, String withdrawalAccountNumber, double amount) {
+        this.depositAccountNumber = depositAccountNumber;
+        this.withdrawalAccountNumber = withdrawalAccountNumber;
+        this.amount = amount;
+        if (createTransactionsFile()) {
+            writeInTransactionsFile(depositAccountNumber, withdrawalAccountNumber, amount);
+        }
+    }
 
     public boolean createTransactionsFile() {
         try {

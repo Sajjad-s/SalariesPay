@@ -1,27 +1,33 @@
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.util.List;
 
 public class Core {
     public static void main(String[] args) throws Exception {
 
+
         Payment payment = new Payment();
         Balance balance = new Balance();
-        JSONObject jsonObject = (JSONObject) payment.paymentToJson();
-        String withDrawAccountNumber = String.valueOf(jsonObject.get("withDrawAccountNumber"));
-        double amount = Integer.parseInt(String.valueOf(jsonObject.get("Amount")));
-        System.out.println("Result: " + withDrawAccountNumber + "\n" + "Amount: " + amount);
-        double accountBalance = balance.searchInBalance(withDrawAccountNumber);
-        if (accountBalance != -1) {
-            if (amount <= accountBalance) {
-                System.out.println("Valid");
+        Transactions transactions ;
 
-            }
-            else {
-                System.out.println("Not Valid");
+        List<Creditors> creditorsList = payment.getCreditorList();
+        Debtor Debtor = payment.getDebtor();
+
+        System.out.println("Debtor Account number is: (depositAccountNumber) : " + Debtor.depositAccountNumber );
+        System.out.println("Debtor withdraw Amount is: (depositAmount)       : " + Debtor.depositAmount );
+        System.out.println("Balance of Debtor is: " + balance.searchInBalance(Debtor.depositAccountNumber));
+
+        if(balance.searchInBalance(Debtor.depositAccountNumber) >= Double.parseDouble(Debtor.depositAmount) ){
+            System.out.println("Transaction Possible");
+            for (Creditors creditor : creditorsList ) {
+                System.out.println("Transfer to: " + creditor.getWithDrawAccountNumber() + " Amount to deposit is: " + creditor.getWithDrawAmount());
+                double newAmount = Double.parseDouble(creditor.getWithDrawAmount()) +  balance.searchInBalance(creditor.withDrawAccountNumber);
+                if(balance.editBalanceFile(creditor.getWithDrawAccountNumber(),balance.searchInBalance(creditor.withDrawAccountNumber), newAmount)) {
+                    System.out.println("New Balance of " +creditor.withDrawAccountNumber + " is: " + balance.searchInBalance(creditor.withDrawAccountNumber));
+                    transactions = new Transactions(creditor.withDrawAccountNumber, Debtor.depositAccountNumber,  Double.parseDouble(creditor.withDrawAmount));
+                }
             }
         }
+        else
+            System.out.println("Transaction Not Possible");
     }
 }
+

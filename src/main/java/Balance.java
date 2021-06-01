@@ -1,26 +1,10 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.util.Arrays;
+import java.io.*;
 
 public class Balance {
 
     String depositNumber;
     double amount;
     File file = new File("Balances.txt");
-
-//    public Balance(String depositNumber, double amount) {
-//        this.depositNumber = depositNumber;
-//        this.amount = amount;
-//        if (createBalanceFile()) {
-//            writeInBalanceFile(depositNumber, amount);
-//        }
-//    }
-
-//    public Balance(String depositNumber) {
-//        searchInBalance(depositNumber);
-//    }
 
     public boolean createBalanceFile() {
         try {
@@ -33,10 +17,44 @@ public class Balance {
             return false;
         }
     }
-    public Boolean editBalanceFile(String depositNumber, double amount){
-        FileWriter fileWriter = new 
-        return true
+
+    static boolean editBalanceFile(String accountNumber, double oldAmount, double newAmount) {
+
+        String existAccountDetail = accountNumber + "          " + String.valueOf(oldAmount);
+//        String existAccountDetail ="2.20.200.2          500.0";
+        String newAccountDetail =   accountNumber + "          " + String.valueOf(newAmount);
+//        String newAccountDetail =  "2.20.200.2          1100.0";
+
+        File fileToBeModified = new File("Balances.txt");
+        String oldContent = "";
+        BufferedReader reader = null;
+        FileWriter writer = null;
+        try {
+            reader = new BufferedReader(new FileReader(fileToBeModified));
+            //Reading all the lines of input text file into oldContent
+            String line = reader.readLine();
+            while (line != null) {
+                oldContent = oldContent + line + System.lineSeparator();
+                line = reader.readLine();
+            }
+            String newContent = oldContent.replaceAll(existAccountDetail, newAccountDetail);
+            writer = new FileWriter(fileToBeModified);
+            writer.write(newContent);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                //Closing the resources
+                reader.close();
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
+
     public Boolean writeInBalanceFile(String depositNumber, double amount) {
         String inputBalance;
         try {
@@ -58,9 +76,9 @@ public class Balance {
         try {
             FileReader fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
-            String string;
+            String string = null;
             while ((string = bufferedReader.readLine()) != null) {
-                lineToArray = string.split("          ");
+                lineToArray = string.split("        ");
                 for (String word : lineToArray) {
                     stringsArray = string.split("\\s+");
                     if (stringsArray[0].equals(depositNumber)) {
