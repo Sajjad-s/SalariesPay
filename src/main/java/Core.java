@@ -3,11 +3,9 @@ import java.util.List;
 public class Core {
     public static void main(String[] args) throws Exception {
 
-
         Payment payment = new Payment();
         Balance balance = new Balance();
         Transactions transactions ;
-
         List<Creditors> creditorsList = payment.getCreditorList();
         Debtor Debtor = payment.getDebtor();
 
@@ -18,13 +16,17 @@ public class Core {
         if(balance.searchInBalance(Debtor.depositAccountNumber) >= Double.parseDouble(Debtor.depositAmount) ){
             System.out.println("Transaction Possible");
             for (Creditors creditor : creditorsList ) {
-                System.out.println("Transfer to: " + creditor.getWithDrawAccountNumber() + " Amount to deposit is: " + creditor.getWithDrawAmount());
-                double newAmount = Double.parseDouble(creditor.getWithDrawAmount()) +  balance.searchInBalance(creditor.withDrawAccountNumber);
-                if(balance.editBalanceFile(creditor.getWithDrawAccountNumber(),balance.searchInBalance(creditor.withDrawAccountNumber), newAmount)) {
-                    System.out.println("New Balance of " +creditor.withDrawAccountNumber + " is: " + balance.searchInBalance(creditor.withDrawAccountNumber));
-                    transactions = new Transactions(creditor.withDrawAccountNumber, Debtor.depositAccountNumber,  Double.parseDouble(creditor.withDrawAmount));
+                System.out.println("Transfer to: " + creditor.getCreditorAccountNumber() + " Amount to deposit is: " + creditor.getWithDrawAmount());
+                double newDebotorsAmount = Double.parseDouble(creditor.getWithDrawAmount()) +  balance.searchInBalance(creditor.creditorAccountNumber);
+                if(balance.editBalanceFile(creditor.getCreditorAccountNumber(),balance.searchInBalance(creditor.creditorAccountNumber), newDebotorsAmount)) {
+                    System.out.println("New Balance of " +creditor.creditorAccountNumber + " is: " + balance.searchInBalance(creditor.creditorAccountNumber));
+                    transactions = new Transactions(creditor.creditorAccountNumber, Debtor.depositAccountNumber,  Double.parseDouble(creditor.withDrawAmount));
                 }
             }
+            if(balance.editBalanceFile(payment.getDebtor().getDepositAccountNumber(),
+                    balance.searchInBalance(Debtor.getDepositAccountNumber()) ,
+                     balance.searchInBalance(payment.getDebtor().getDepositAccountNumber()) - Double.parseDouble(payment.getDebtor().getDepositAmount())) )
+                System.out.println("Transaction Complete");
         }
         else
             System.out.println("Transaction Not Possible");

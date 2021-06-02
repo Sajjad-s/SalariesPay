@@ -1,18 +1,18 @@
 public class Creditors {
-    public Creditors(String withDrawAccountNumber, String withDrawAmount) {
-        this.withDrawAccountNumber = withDrawAccountNumber;
+    public Creditors(String creditorAccountNumber, String withDrawAmount) {
+        this.creditorAccountNumber = creditorAccountNumber;
         this.withDrawAmount = withDrawAmount;
     }
 
-    public String getWithDrawAccountNumber() {
-        return withDrawAccountNumber;
+    public String getCreditorAccountNumber() {
+        return creditorAccountNumber;
     }
 
     public String getWithDrawAmount() {
         return withDrawAmount;
     }
 
-    String withDrawAccountNumber;
+    String creditorAccountNumber;
     String withDrawAmount;
 
 }

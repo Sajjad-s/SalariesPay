@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.FileWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Transactions {
     String depositAccountNumber;
@@ -7,12 +9,12 @@ public class Transactions {
     double amount;
     File file = new File("Transactions.txt");
 
-    public Transactions(String depositAccountNumber, String withdrawalAccountNumber, double amount) {
-        this.depositAccountNumber = depositAccountNumber;
-        this.withdrawalAccountNumber = withdrawalAccountNumber;
+    public Transactions(String debtorAccountNumber, String creditorAccountNumber, double amount) {
+        this.depositAccountNumber = debtorAccountNumber;
+        this.withdrawalAccountNumber = creditorAccountNumber;
         this.amount = amount;
         if (createTransactionsFile()) {
-            writeInTransactionsFile(depositAccountNumber, withdrawalAccountNumber, amount);
+            writeInTransactionsFile(debtorAccountNumber, creditorAccountNumber, amount);
         }
     }
 
@@ -29,7 +31,9 @@ public class Transactions {
     }
 
     public void writeInTransactionsFile(String depositAccountNumber, String withdrawalAccountNumber, double amount) {
-        String completeTransaction = withdrawalAccountNumber + "        " + depositAccountNumber + "        " + Double.toString(amount) + "\n";
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        String completeTransaction = withdrawalAccountNumber + "        " + depositAccountNumber + "        " + Double.toString(amount) + "        " + dtf.format(now) + "\n";
         try {
             FileWriter fileWriter = new FileWriter(file, true);
             fileWriter.write(completeTransaction);
