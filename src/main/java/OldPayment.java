@@ -4,14 +4,13 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Payment {
+public class OldPayment {
 
     Debtor debtor;
-
     List<Creditors> creditorsList = new ArrayList<>();
     File file = new File("PaymentOrder.txt");
 
-    public Payment() throws FileNotFoundException {
+    public OldPayment() throws FileNotFoundException {
         paymentFileToJson();
     }
 
@@ -29,15 +28,15 @@ public class Payment {
                     stringsArray = line.split("\\s");
 
                     if (word.equals("debtor")) {
-                        debtor = new Debtor(lineToArray[1],lineToArray[2]);
+                        debtor = new Debtor(lineToArray[1], lineToArray[2]);
                     }
 
                     if (word.equals("creditor")) {
-                        creditorsList.add(new Creditors(lineToArray[1],lineToArray[2]));
+                        creditorsList.add(new Creditors(lineToArray[1], lineToArray[2]));
                     }
                 }
             }
-            } catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error in PaymentToJason");
         }
